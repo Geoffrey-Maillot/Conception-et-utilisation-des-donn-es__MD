@@ -521,9 +521,9 @@ const level = await Level.update({
 
 
 const level = await Level.findOne({ where: { name: 'Débutant' },
-    include: { // ici on créé un objet dans l'include car on a plusieurs jointures à faire (en profondeur)
-       association: 'questions', // on passe par association car on doit effectuer d'autres jointures à partir de cette table
-       include: ['answers', 'correct'] // je recupere les reponses possibles pour chaque question et sa bonne reponse
+    include: { 
+       association: 'questions', 
+       include: ['answers', 'correct']
     }
 })
     console.log(`Le niveau est situé à : ${level.name}`);
