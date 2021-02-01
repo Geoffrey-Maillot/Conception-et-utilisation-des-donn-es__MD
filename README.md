@@ -1,4 +1,4 @@
-# Conception des données à partir d'un nouveau projet.
+# Conception et utilisation des données à partir d'un nouveau projet.
 
 1. Gestion de projet (GDP)
 2. Modélisation des données 
