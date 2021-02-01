@@ -384,7 +384,7 @@ module.exports = {
 }
 ```
 
-## Les requêtes 
+## Les requêtes (version promises)
 
 Les requêtes à la BDD sont effectué dans les méthodes des controllers.
 
@@ -392,7 +392,6 @@ Exemple de requêtes (hors du controller) :
 
 ```javascript
   
-require('dotenv').config();
 
 // On require tous nos models
 const {Level, User, Quiz, Answer, Tag, Question} = require('./app/models');
@@ -479,6 +478,62 @@ Level.findOne({ where: { name: 'Débutant' },
         console.log(`La bonne réponse est : ${question.correct.description}`)
     }
 });
+
+
+```
+---
+---
+
+## Les requêtes (version async/await)
+
+
+```javascript
+ 
+
+// On require tous nos models
+const {Level, User, Quiz, Answer, Tag, Question} = require('./app/models');
+
+// Récupérer le troisième user
+const user = await User.findByPk(3)
+    console.log(user.email);
+     res.render('vue', {user});
+
+
+// Récupérer tous les user
+const users = await User.findAll()
+    console.log(users);
+
+
+// Créer un level "Boss"
+const level = await Level.create({name: 'Boss'})
+    console.log(level);
+    
+
+// Mettre à jour les levels "Très difficile" en "Expert"
+const level = await Level.update({
+    name: 'Expert'
+}, {
+    where: {
+        name: 'Très difficile'
+    }
+})
+ console.log(level)
+
+
+const level = await Level.findOne({ where: { name: 'Débutant' },
+    include: { // ici on créé un objet dans l'include car on a plusieurs jointures à faire (en profondeur)
+       association: 'questions', // on passe par association car on doit effectuer d'autres jointures à partir de cette table
+       include: ['answers', 'correct'] // je recupere les reponses possibles pour chaque question et sa bonne reponse
+    }
+})
+    console.log(`Le niveau est situé à : ${level.name}`);
+    for(const question of level.questions){
+        console.log(`Question : ${question.question}`);
+        for(const answer of question.answers){
+            console.log(`- ${answer.description}`);
+        }
+        console.log(`La bonne réponse est : ${question.correct.description}`)
+    
 
 
 ```
